@@ -38,12 +38,12 @@ class HelloFlutterState extends State<HelloFlutter> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: Icon(Icons.home),
-          title: Text('Hello Flutter'),
+          leading: const Icon(Icons.home),
+          title: const Text('Hello Flutter'),
           actions: [
             Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: Icon(Icons.help),
+              margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+              child: const Icon(Icons.help),
             )
           ],
         ),
@@ -61,7 +61,7 @@ class HelloFlutterState extends State<HelloFlutter> {
               const SizedBox(height: 10),
               Text(
                 '$score',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w600,
                 ),
