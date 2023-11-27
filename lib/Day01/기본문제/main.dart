@@ -9,95 +9,77 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.fromLTRB(15, 30, 15, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'FlutterBoot Plus',
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                ),
+      home: FlutterBootPlus(),
+    );
+  }
+}
+
+class FlutterBootPlus extends StatelessWidget {
+  const FlutterBootPlus({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        margin: const EdgeInsets.fromLTRB(15, 30, 15, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'FlutterBoot Plus',
+              style: TextStyle(
+                fontSize: 35,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 20),
-              Flexible(
-                child: FlutterBootPlus(),
-              ),
-              const Column(
-                children: [
-                  Text(
-                    'Restore subscription',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
+            ),
+            const SizedBox(height: 20),
+            Flexible(
+              child: Features(features: features),
+            ),
+            const Column(
+              children: [
+                Text(
+                  'Restore subscription',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Auto-renews for \$25/month until canceled',
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                ],
-              ),
-              const FilledButton(
-                onPressed: null,
-                style: ButtonStyle(
-                  foregroundColor: MaterialStatePropertyAll(Colors.white),
-                  backgroundColor: MaterialStatePropertyAll(Colors.black),
                 ),
-                child: Text('Subscribe'),
+                SizedBox(height: 10),
+                Text(
+                  'Auto-renews for \$25/month until canceled',
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            const FilledButton(
+              onPressed: null,
+              style: ButtonStyle(
+                foregroundColor: MaterialStatePropertyAll(Colors.white),
+                backgroundColor: MaterialStatePropertyAll(Colors.black),
               ),
-            ],
-          ),
+              child: Text('Subscribe'),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class Feature {
-  final Icon icon;
-  final String title;
-  final String description;
+class Features extends StatelessWidget {
+  final List<Feature> features;
 
-  Feature({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-}
-
-class FlutterBootPlus extends StatelessWidget {
-  FlutterBootPlus({super.key});
-
-  final List<Feature> features = [
-    Feature(
-      icon: const Icon(Icons.bolt),
-      title: 'Premium features',
-      description:
-          'Plus subscribers have access to FlutterBoot+ and our latest beta features.',
-    ),
-    Feature(
-      icon: const Icon(Icons.whatshot),
-      title: 'Priority access',
-      description:
-          'You\'ll be able to use FlutterBoot+ even when demand is high ',
-    ),
-    Feature(
-      icon: const Icon(Icons.speed),
-      title: 'Ultra-fast',
-      description: 'Enjoy even faster response speeds when using FlutterBoot',
-    ),
-  ];
+  const Features({
+    Key? key,
+    required this.features,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +90,8 @@ class FlutterBootPlus extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: 50,
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
               child: features[index].icon,
             ),
             Flexible(
@@ -137,3 +119,35 @@ class FlutterBootPlus extends StatelessWidget {
     );
   }
 }
+
+class Feature {
+  final Icon icon;
+  final String title;
+  final String description;
+
+  Feature({
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+}
+
+List<Feature> features = [
+  Feature(
+    icon: const Icon(Icons.bolt, size: 30),
+    title: 'Premium features',
+    description:
+        'Plus subscribers have access to FlutterBoot+ and our latest beta features.',
+  ),
+  Feature(
+    icon: const Icon(Icons.whatshot, size: 30),
+    title: 'Priority access',
+    description:
+        'You\'ll be able to use FlutterBoot+ even when demand is high ',
+  ),
+  Feature(
+    icon: const Icon(Icons.speed, size: 30),
+    title: 'Ultra-fast',
+    description: 'Enjoy even faster response speeds when using FlutterBoot',
+  ),
+];
