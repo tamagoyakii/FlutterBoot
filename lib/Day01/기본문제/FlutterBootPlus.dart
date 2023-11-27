@@ -5,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +17,18 @@ class MyApp extends StatelessWidget {
 }
 
 class FlutterBootPlus extends StatelessWidget {
-  const FlutterBootPlus({Key? key}) : super(key: key);
+  const FlutterBootPlus({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Padding(
-            padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: Text(
               'FlutterBoot Plus',
               style: TextStyle(
@@ -78,9 +79,9 @@ class PlusFeatures extends StatelessWidget {
   final List<Feature> features;
 
   const PlusFeatures({
-    Key? key,
+    super.key,
     required this.features,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class PlusFeatures extends StatelessWidget {
       itemCount: features.length,
       itemBuilder: (context, index) {
         return ListTile(
-          leading: Container(
+          leading: SizedBox(
             width: 40,
             height: 40,
             child: Center(child: features[index].icon),
