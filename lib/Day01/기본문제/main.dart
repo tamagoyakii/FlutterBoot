@@ -37,7 +37,7 @@ class FlutterBootPlus extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Flexible(
-              child: Features(features: features),
+              child: PlusFeatures(features: features),
             ),
             const Column(
               children: [
@@ -73,10 +73,10 @@ class FlutterBootPlus extends StatelessWidget {
   }
 }
 
-class Features extends StatelessWidget {
+class PlusFeatures extends StatelessWidget {
   final List<Feature> features;
 
-  const Features({
+  const PlusFeatures({
     Key? key,
     required this.features,
   }) : super(key: key);
