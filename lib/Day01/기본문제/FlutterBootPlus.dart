@@ -22,43 +22,44 @@ class FlutterBootPlus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.fromLTRB(15, 30, 15, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 50, 20, 10),
+            child: Text(
               'FlutterBoot Plus',
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
-            Flexible(
-              child: PlusFeatures(features: features),
-            ),
-            const Column(
-              children: [
-                Text(
-                  'Restore subscription',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                  ),
+          ),
+          Flexible(
+            child: PlusFeatures(features: features),
+          ),
+          const Column(
+            children: [
+              Text(
+                'Restore subscription',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
                 ),
-                SizedBox(height: 10),
-                Text(
-                  'Auto-renews for \$25/month until canceled',
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Auto-renews for \$25/month until canceled',
+                style: TextStyle(
+                  fontSize: 15,
                 ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            const FilledButton(
+              ),
+            ],
+          ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 5, 20, 10),
+            child: FilledButton(
               onPressed: null,
               style: ButtonStyle(
                 foregroundColor: MaterialStatePropertyAll(Colors.white),
@@ -66,8 +67,8 @@ class FlutterBootPlus extends StatelessWidget {
               ),
               child: Text('Subscribe'),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -86,34 +87,21 @@ class PlusFeatures extends StatelessWidget {
     return ListView.builder(
       itemCount: features.length,
       itemBuilder: (context, index) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-              child: features[index].icon,
+        return ListTile(
+          leading: Container(
+            width: 40,
+            height: 40,
+            child: Center(child: features[index].icon),
+          ),
+          title: Text(
+            features[index].title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
             ),
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    features[index].title,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(features[index].description),
-                  const SizedBox(
-                    height: 20,
-                  )
-                ],
-              ),
-            ),
-          ],
+          ),
+          subtitle: Text(features[index].description),
+          isThreeLine: true,
         );
       },
     );
