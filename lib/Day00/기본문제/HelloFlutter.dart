@@ -20,10 +20,10 @@ class HelloFlutter extends StatefulWidget {
   const HelloFlutter({super.key});
 
   @override
-  State<HelloFlutter> createState() => HelloFlutterState();
+  State<HelloFlutter> createState() => _HelloFlutterState();
 }
 
-class HelloFlutterState extends State<HelloFlutter> {
+class _HelloFlutterState extends State<HelloFlutter> {
   int score = 0;
 
   void increaseScore() {

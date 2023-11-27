@@ -20,10 +20,10 @@ class MyCuteGPT extends StatefulWidget {
   const MyCuteGPT({super.key});
 
   @override
-  State<MyCuteGPT> createState() => MyCuteGPTState();
+  State<MyCuteGPT> createState() => _MyCuteGPTState();
 }
 
-class MyCuteGPTState extends State<MyCuteGPT> {
+class _MyCuteGPTState extends State<MyCuteGPT> {
   final List<String> messages = ['Hello, how can I help you?'];
   TextEditingController inputController = TextEditingController();
   final userName = ['GPT', 'me'];
