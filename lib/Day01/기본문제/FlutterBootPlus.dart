@@ -86,24 +86,22 @@ class PlusFeatures extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         itemCount: features.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: SizedBox(
-              width: 40,
-              height: 40,
-              child: Center(child: features[index].icon),
+        itemBuilder: (context, index) => ListTile(
+          leading: SizedBox(
+            width: 40,
+            height: 40,
+            child: Center(child: features[index].icon),
+          ),
+          title: Text(
+            features[index].title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
             ),
-            title: Text(
-              features[index].title,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            subtitle: Text(features[index].description),
-            isThreeLine: true,
-          );
-        },
+          ),
+          subtitle: Text(features[index].description),
+          isThreeLine: true,
+        ),
       ),
     );
   }
