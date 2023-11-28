@@ -11,9 +11,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        title: 'MyHighScore',
-        debugShowCheckedModeBanner: false,
-        home: MyHighScore());
+      title: 'MyHighScore',
+      debugShowCheckedModeBanner: false,
+      home: MyHighScore(),
+    );
   }
 }
 
@@ -88,9 +89,10 @@ class _MyHighScoreState extends State<MyHighScore> {
         children: [
           const Text('Your score', style: TextStyle(fontSize: 30)),
           const SizedBox(height: 10),
-          Text('$score',
-              style:
-                  const TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+          Text(
+            '$score',
+            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          ),
         ],
       ),
     );
@@ -101,35 +103,40 @@ class _MyHighScoreState extends State<MyHighScore> {
       alignment: Alignment.bottomRight,
       child: ValueListenableBuilder(
         valueListenable: gauge,
-        builder: (context, value, _) =>
-            LayoutBuilder(builder: (context, constraints) {
-          double barHeight = constraints.maxHeight * 0.8;
+        builder: (context, value, _) => LayoutBuilder(
+          builder: (context, constraints) {
+            double barHeight = constraints.maxHeight * 0.8;
 
-          return Container(
-            height: barHeight,
-            width: 40,
-            decoration: BoxDecoration(
+            return Container(
+              height: barHeight,
+              width: 40,
+              decoration: BoxDecoration(
                 color: Colors.grey.shade800,
                 borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    topLeft: Radius.circular(15))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: value * barHeight,
-                  constraints:
-                      BoxConstraints(maxHeight: barHeight, minHeight: 0),
-                  decoration: BoxDecoration(
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: value * barHeight,
+                    constraints:
+                        BoxConstraints(maxHeight: barHeight, minHeight: 0),
+                    decoration: BoxDecoration(
                       color: Colors.purpleAccent.shade400,
                       borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(12),
-                          topLeft: Radius.circular(12))),
-                )
-              ],
-            ),
-          );
-        }),
+                        topRight: Radius.circular(12),
+                        topLeft: Radius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -140,15 +147,17 @@ class _MyHighScoreState extends State<MyHighScore> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: SafeArea(
-        child: Column(children: [
-          _score(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 24, 80),
-              child: _gaugeBar(),
+        child: Column(
+          children: [
+            _score(),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 24, 80),
+                child: _gaugeBar(),
+              ),
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: onButtonPress,
