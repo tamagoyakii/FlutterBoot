@@ -37,9 +37,7 @@ class FlutterBootPlus extends StatelessWidget {
               ),
             ),
           ),
-          Flexible(
-            child: PlusFeatures(features: features),
-          ),
+          PlusFeatures(features: features),
           const Column(
             children: [
               Text(
@@ -85,26 +83,28 @@ class PlusFeatures extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: features.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: SizedBox(
-            width: 40,
-            height: 40,
-            child: Center(child: features[index].icon),
-          ),
-          title: Text(
-            features[index].title,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
+    return Expanded(
+      child: ListView.builder(
+        itemCount: features.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: SizedBox(
+              width: 40,
+              height: 40,
+              child: Center(child: features[index].icon),
             ),
-          ),
-          subtitle: Text(features[index].description),
-          isThreeLine: true,
-        );
-      },
+            title: Text(
+              features[index].title,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            subtitle: Text(features[index].description),
+            isThreeLine: true,
+          );
+        },
+      ),
     );
   }
 }
