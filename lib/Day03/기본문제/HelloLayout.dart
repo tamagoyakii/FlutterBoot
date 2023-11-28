@@ -55,7 +55,7 @@ class HelloLayout extends StatelessWidget {
                     children: [
                       Container(color: Colors.green),
                       Container(
-                        color: Colors.orange,
+                        color: Colors.red,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -67,7 +67,7 @@ class HelloLayout extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        color: Colors.blue,
+                        color: Colors.orange,
                         child: Column(
                           children: [
                             Container(
@@ -85,7 +85,7 @@ class HelloLayout extends StatelessWidget {
                               padding: const EdgeInsets.all(15),
                               child: Container(
                                 height: width * 0.25,
-                                color: Colors.red,
+                                color: Colors.blue,
                               ),
                             ),
                           ],
@@ -112,7 +112,7 @@ class HelloLayout extends StatelessWidget {
                       Container(
                         height: height * 0.3,
                         decoration: const BoxDecoration(
-                          color: Colors.green,
+                          color: Colors.grey,
                         ),
                       ),
                     ],
