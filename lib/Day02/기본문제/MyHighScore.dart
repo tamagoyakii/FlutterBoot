@@ -83,17 +83,16 @@ class _MyHighScoreState extends State<MyHighScore> {
     timer?.cancel();
   }
 
-  Widget _score() {
-    return Center(
-      child: Column(
-        children: [
-          const Text('Your score', style: TextStyle(fontSize: 30)),
-          const SizedBox(height: 10),
-          Text(
-            '$score',
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-          ),
-        ],
+  Widget _gauge({required double barHeight, required double value}) {
+    return Container(
+      height: value * barHeight,
+      constraints: BoxConstraints(maxHeight: barHeight, minHeight: 0),
+      decoration: BoxDecoration(
+        color: Colors.purpleAccent.shade400,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(12),
+          topLeft: Radius.circular(12),
+        ),
       ),
     );
   }
@@ -106,7 +105,6 @@ class _MyHighScoreState extends State<MyHighScore> {
         builder: (context, value, _) => LayoutBuilder(
           builder: (context, constraints) {
             double barHeight = constraints.maxHeight * 0.8;
-
             return Container(
               height: barHeight,
               width: 40,
@@ -119,24 +117,26 @@ class _MyHighScoreState extends State<MyHighScore> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: value * barHeight,
-                    constraints:
-                        BoxConstraints(maxHeight: barHeight, minHeight: 0),
-                    decoration: BoxDecoration(
-                      color: Colors.purpleAccent.shade400,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        topLeft: Radius.circular(12),
-                      ),
-                    ),
-                  ),
-                ],
+                children: [_gauge(barHeight: barHeight, value: value)],
               ),
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _score() {
+    return Center(
+      child: Column(
+        children: [
+          const Text('Your score', style: TextStyle(fontSize: 30)),
+          const SizedBox(height: 10),
+          Text(
+            '$score',
+            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
     );
   }
