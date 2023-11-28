@@ -42,9 +42,6 @@ class _MyCuteGPTState extends State<MyCuteGPT> {
   }
 
   void addMessage() {
-    if (inputController.text.isEmpty) {
-      return;
-    }
     setState(() {
       messages.add(inputController.text);
       messages.add(
