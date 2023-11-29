@@ -43,7 +43,6 @@ class HelloLayout extends StatelessWidget {
                 color: Colors.black,
               ),
               child: GridView(
-                shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
@@ -56,9 +55,13 @@ class HelloLayout extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          height: width * 0.25,
-                          color: Colors.white,
+                        Expanded(
+                          flex: 1,
+                          child: Container(color: Colors.red),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(color: Colors.white),
                         ),
                       ],
                     ),
@@ -67,9 +70,13 @@ class HelloLayout extends StatelessWidget {
                     color: Colors.orange,
                     child: Column(
                       children: [
-                        Container(
-                          height: width * 0.325,
-                          color: Colors.white,
+                        Expanded(
+                          flex: 2,
+                          child: Container(color: Colors.white),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(color: Colors.orange),
                         ),
                       ],
                     ),
@@ -78,12 +85,18 @@ class HelloLayout extends StatelessWidget {
                     color: Colors.white,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Container(
-                            height: width * 0.25,
-                            color: Colors.blue,
+                        Expanded(
+                          flex: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Container(
+                              color: Colors.blue,
+                            ),
                           ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(color: Colors.white),
                         ),
                       ],
                     ),
@@ -92,27 +105,11 @@ class HelloLayout extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  double height = constraints.maxHeight;
-
-                  return Column(
-                    children: [
-                      Container(
-                        height: height * 0.7,
-                        decoration: const BoxDecoration(
-                          color: Colors.purple,
-                        ),
-                      ),
-                      Container(
-                        height: height * 0.3,
-                        decoration: const BoxDecoration(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  );
-                },
+              child: Column(
+                children: [
+                  Expanded(flex: 2, child: Container(color: Colors.purple)),
+                  Expanded(flex: 1, child: Container(color: Colors.grey)),
+                ],
               ),
             ),
           ],
