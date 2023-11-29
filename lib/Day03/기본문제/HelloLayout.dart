@@ -22,6 +22,8 @@ class HelloLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
@@ -35,66 +37,59 @@ class HelloLayout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-                double width = constraints.maxWidth;
-
-                return Container(
-                  height: width,
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                  ),
-                  child: GridView(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 5,
-                      mainAxisSpacing: 5,
-                      crossAxisCount: 2,
+            Container(
+              height: width,
+              decoration: const BoxDecoration(
+                color: Colors.black,
+              ),
+              child: GridView(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  crossAxisCount: 2,
+                ),
+                children: [
+                  Container(color: Colors.green),
+                  Container(
+                    color: Colors.red,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          height: width * 0.25,
+                          color: Colors.white,
+                        ),
+                      ],
                     ),
-                    children: [
-                      Container(color: Colors.green),
-                      Container(
-                        color: Colors.red,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              height: width * 0.25,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Colors.orange,
-                        child: Column(
-                          children: [
-                            Container(
-                              height: width * 0.325,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Container(
-                                height: width * 0.25,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
                   ),
-                );
-              },
+                  Container(
+                    color: Colors.orange,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: width * 0.325,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Container(
+                            height: width * 0.25,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: LayoutBuilder(
