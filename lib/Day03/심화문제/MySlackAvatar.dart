@@ -25,12 +25,12 @@ class MySlackAvatar extends StatefulWidget {
 }
 
 class _MySlackAvatarState extends State<MySlackAvatar> {
-  double bighead = 50;
+  double bigHead = 50;
   double roundedShoulder = 100;
 
   void changeHeadSize(double value) {
     setState(() {
-      bighead = value;
+      bigHead = value;
     });
   }
 
@@ -57,8 +57,8 @@ class _MySlackAvatarState extends State<MySlackAvatar> {
           Flexible(
             child: Center(
               child: Container(
-                width: 70 + bighead * 0.4,
-                height: 70 + bighead * 0.4,
+                width: 70 + bigHead * 0.4,
+                height: 70 + bigHead * 0.4,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.all(
@@ -104,7 +104,7 @@ class _MySlackAvatarState extends State<MySlackAvatar> {
               avatar(),
               const SizedBox(height: 50),
               Slider(
-                value: bighead,
+                value: bigHead,
                 max: 100,
                 onChanged: changeHeadSize,
               ),
