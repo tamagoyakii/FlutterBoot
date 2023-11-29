@@ -26,10 +26,38 @@ class HelloTextField extends StatefulWidget {
 }
 
 class _HelloTextFieldState extends State<HelloTextField> {
-  TextEditingController leftInputController = TextEditingController();
-  TextEditingController rightInputController = TextEditingController();
-  FocusNode leftInputFocusNode = FocusNode();
-  FocusNode rightInputFocusNode = FocusNode();
+  List<TextEditingController> inputControllers = [
+    TextEditingController(),
+    TextEditingController(),
+  ];
+  List<FocusNode> inputFocusNodes = [
+    FocusNode(),
+    FocusNode(),
+  ];
+
+  Widget _textField({
+    required int preIndex,
+    required int fieldIndex,
+    required int postIndex,
+  }) {
+    return RawKeyboardListener(
+      focusNode: FocusNode(),
+      onKey: (RawKeyEvent event) {
+        if (event.runtimeType == RawKeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.backspace &&
+            inputControllers[fieldIndex].text.isEmpty) {
+          FocusScope.of(context).requestFocus(inputFocusNodes[preIndex]);
+        }
+      },
+      child: TextField(
+        controller: inputControllers[fieldIndex],
+        focusNode: inputFocusNodes[fieldIndex],
+        onEditingComplete: () {
+          FocusScope.of(context).requestFocus(inputFocusNodes[postIndex]);
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,43 +71,11 @@ class _HelloTextFieldState extends State<HelloTextField> {
             children: [
               const SizedBox(width: 20),
               Expanded(
-                child: RawKeyboardListener(
-                  focusNode: FocusNode(),
-                  onKey: (RawKeyEvent event) {
-                    if (event.runtimeType == RawKeyDownEvent &&
-                        event.logicalKey == LogicalKeyboardKey.backspace &&
-                        leftInputController.text.isEmpty) {
-                      FocusScope.of(context).requestFocus(rightInputFocusNode);
-                    }
-                  },
-                  child: TextField(
-                    controller: leftInputController,
-                    focusNode: leftInputFocusNode,
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus(rightInputFocusNode);
-                    },
-                  ),
-                ),
+                child: _textField(preIndex: 1, fieldIndex: 0, postIndex: 1),
               ),
               const SizedBox(width: 20),
               Expanded(
-                child: RawKeyboardListener(
-                  focusNode: FocusNode(),
-                  onKey: (RawKeyEvent event) {
-                    if (event.runtimeType == RawKeyDownEvent &&
-                        event.logicalKey == LogicalKeyboardKey.backspace &&
-                        rightInputController.text.isEmpty) {
-                      FocusScope.of(context).requestFocus(leftInputFocusNode);
-                    }
-                  },
-                  child: TextField(
-                    controller: rightInputController,
-                    focusNode: rightInputFocusNode,
-                    onEditingComplete: () {
-                      FocusScope.of(context).requestFocus(leftInputFocusNode);
-                    },
-                  ),
-                ),
+                child: _textField(preIndex: 0, fieldIndex: 1, postIndex: 0),
               ),
               const SizedBox(width: 20),
             ],
