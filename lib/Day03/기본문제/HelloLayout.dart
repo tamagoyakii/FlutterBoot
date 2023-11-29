@@ -42,36 +42,18 @@ class HelloLayout extends StatelessWidget {
                 crossAxisCount: 2,
                 children: [
                   Container(color: Colors.green),
-                  Container(
-                    color: Colors.red,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(color: Colors.red),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(color: Colors.white),
-                        ),
-                      ],
-                    ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(flex: 1, child: Container(color: Colors.red)),
+                      Expanded(flex: 1, child: Container(color: Colors.white)),
+                    ],
                   ),
-                  Container(
-                    color: Colors.orange,
-                    child: Column(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(color: Colors.white),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(color: Colors.orange),
-                        ),
-                      ],
-                    ),
+                  Column(
+                    children: [
+                      Expanded(flex: 2, child: Container(color: Colors.white)),
+                      Expanded(flex: 1, child: Container(color: Colors.orange)),
+                    ],
                   ),
                   Container(
                     color: Colors.white,
