@@ -34,20 +34,14 @@ class HelloLayout extends StatelessWidget {
       ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               height: width,
-              decoration: const BoxDecoration(
-                color: Colors.black,
-              ),
-              child: GridView(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                  crossAxisCount: 2,
-                ),
+              color: Colors.black,
+              child: GridView.count(
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
+                crossAxisCount: 2,
                 children: [
                   Container(color: Colors.green),
                   Container(
