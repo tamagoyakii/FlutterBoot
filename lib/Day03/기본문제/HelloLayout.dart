@@ -22,8 +22,6 @@ class HelloLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
@@ -36,7 +34,7 @@ class HelloLayout extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: width,
+              height: MediaQuery.of(context).size.width,
               color: Colors.black,
               child: GridView.count(
                 crossAxisSpacing: 5,
