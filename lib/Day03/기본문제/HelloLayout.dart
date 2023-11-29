@@ -70,7 +70,7 @@ class HelloLayout extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 2,
-                          child: Container(color: Colors.white),
+                          child: Container(),
                         ),
                       ],
                     ),
