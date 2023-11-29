@@ -35,26 +35,35 @@ class _HelloTextFieldState extends State<HelloTextField> {
     FocusNode(),
   ];
 
-  Widget _textField({
-    required int preIndex,
-    required int fieldIndex,
-    required int postIndex,
+  @override
+  void dispose() {
+    super.dispose();
+    for (var el in inputFocusNodes) {
+      el.dispose();
+    }
+  }
+
+  Widget _buildTextField({
+    required int prevInded,
+    required int curIndex,
+    required int nextIndex,
   }) {
     return RawKeyboardListener(
       focusNode: FocusNode(),
       onKey: (RawKeyEvent event) {
-        if (event.runtimeType == RawKeyDownEvent &&
+        if (event is RawKeyDownEvent &&
             event.logicalKey == LogicalKeyboardKey.backspace &&
-            inputControllers[fieldIndex].text.isEmpty) {
-          FocusScope.of(context).requestFocus(inputFocusNodes[preIndex]);
+            inputControllers[curIndex].text.isEmpty) {
+          FocusScope.of(context).requestFocus(inputFocusNodes[prevInded]);
         }
       },
       child: TextField(
-        controller: inputControllers[fieldIndex],
-        focusNode: inputFocusNodes[fieldIndex],
+        controller: inputControllers[curIndex],
+        focusNode: inputFocusNodes[curIndex],
         onEditingComplete: () {
-          FocusScope.of(context).requestFocus(inputFocusNodes[postIndex]);
+          FocusScope.of(context).requestFocus(inputFocusNodes[nextIndex]);
         },
+        textInputAction: TextInputAction.next,
       ),
     );
   }
@@ -67,18 +76,29 @@ class _HelloTextFieldState extends State<HelloTextField> {
       ),
       body: SafeArea(
         child: Center(
-          child: Row(
-            children: [
-              const SizedBox(width: 20),
-              Expanded(
-                child: _textField(preIndex: 1, fieldIndex: 0, postIndex: 1),
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: _textField(preIndex: 0, fieldIndex: 1, postIndex: 0),
-              ),
-              const SizedBox(width: 20),
-            ],
+          child: Form(
+            // key: this.formKey,
+            child: Row(
+              children: [
+                const SizedBox(width: 20),
+                Expanded(
+                  child: _buildTextField(
+                    prevInded: 1,
+                    curIndex: 0,
+                    nextIndex: 1,
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: _buildTextField(
+                    prevInded: 0,
+                    curIndex: 1,
+                    nextIndex: 0,
+                  ),
+                ),
+                const SizedBox(width: 20),
+              ],
+            ),
           ),
         ),
       ),
