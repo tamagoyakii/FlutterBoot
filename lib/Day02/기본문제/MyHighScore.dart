@@ -26,9 +26,9 @@ class MyHighScore extends StatefulWidget {
 }
 
 class _MyHighScoreState extends State<MyHighScore> {
-  ValueNotifier<double> gauge = ValueNotifier(0.0);
-  Timer? timer;
+  double gaugeValue = 0.0;
   int score = 0;
+  late Timer timer;
 
   void addScore() {
     setState(() {
@@ -39,94 +39,79 @@ class _MyHighScoreState extends State<MyHighScore> {
   void resetScore() {
     setState(() {
       score = 0;
-      gauge.value = 0;
+      gaugeValue = 0.0;
     });
   }
 
   void onButtonPress() {
-    setTimer();
     setState(() {
-      if (gauge.value < 1) {
-        gauge.value += 0.4;
+      if (gaugeValue < 1) {
+        gaugeValue += 0.4;
       }
-      if (gauge.value >= 1) {
+      if (gaugeValue >= 1) {
         addScore();
       }
     });
   }
 
-  void setTimer() {
-    if (timer?.isActive != true) {
-      timer = Timer.periodic(const Duration(milliseconds: 15), (timer) {
-        if (gauge.value > 0) {
-          gauge.value -= 0.03;
-        }
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    gauge.addListener(() {
-      if (gauge.value <= 0) {
-        resetScore();
-        timer?.cancel();
+    timer = Timer.periodic(const Duration(milliseconds: 15), (timer) {
+      if (gaugeValue > 0) {
+        setState(() {
+          gaugeValue -= 0.03;
+        });
       }
     });
   }
 
   @override
   void dispose() {
+    timer.cancel();
     super.dispose();
-    gauge.dispose();
-    timer?.cancel();
   }
 
-  Widget _gauge({required double barHeight, required double value}) {
-    return Container(
-      height: value * barHeight,
-      constraints: BoxConstraints(maxHeight: barHeight, minHeight: 0),
-      decoration: BoxDecoration(
-        color: Colors.purpleAccent.shade400,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(12),
-          topLeft: Radius.circular(12),
-        ),
-      ),
-    );
-  }
-
-  Widget _gaugeBar() {
+  Widget _buildGaugeBar() {
     return Align(
       alignment: Alignment.bottomRight,
-      child: ValueListenableBuilder(
-        valueListenable: gauge,
-        builder: (context, value, _) => LayoutBuilder(
-          builder: (context, constraints) {
-            double barHeight = constraints.maxHeight * 0.8;
-            return Container(
-              height: barHeight,
-              width: 40,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade800,
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(15),
-                  topLeft: Radius.circular(15),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double barHeight = constraints.maxHeight * 0.8;
+          return Container(
+            height: barHeight,
+            width: 40,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade800,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(15),
+                topLeft: Radius.circular(15),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: gaugeValue * barHeight,
+                  constraints:
+                      BoxConstraints(maxHeight: barHeight, minHeight: 0),
+                  decoration: BoxDecoration(
+                    color: Colors.purpleAccent.shade400,
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      topLeft: Radius.circular(12),
+                    ),
+                  ),
                 ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [_gauge(barHeight: barHeight, value: value)],
-              ),
-            );
-          },
-        ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _score() {
+  Widget _buildScore() {
     return Center(
       child: Column(
         children: [
@@ -149,11 +134,11 @@ class _MyHighScoreState extends State<MyHighScore> {
       body: SafeArea(
         child: Column(
           children: [
-            _score(),
+            _buildScore(),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 24, 80),
-                child: _gaugeBar(),
+                padding: const EdgeInsets.only(left: 20, right: 24, bottom: 80),
+                child: _buildGaugeBar(),
               ),
             ),
           ],
