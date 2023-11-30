@@ -4,7 +4,6 @@ import 'dart:math';
 
 class GreenAlignment {
   static final _rng = Random();
-
   final Alignment alignment;
 
   GreenAlignment()
@@ -40,11 +39,10 @@ class CatchGreen extends StatefulWidget {
 
 class _CatchGreenState extends State<CatchGreen> {
   late Timer timer;
-  // int time = 0;
   bool isPlaying = false;
   GreenAlignment green = GreenAlignment();
-  var startTime = DateTime.now();
-  var timeElapsed = 0.0;
+  DateTime startTime = DateTime.now();
+  double timeElapsed = 0.0;
 
   void startTimer() {
     setState(() {
@@ -93,8 +91,8 @@ class _CatchGreenState extends State<CatchGreen> {
       child: Container(
         width: 50,
         height: 50,
-        decoration: const BoxDecoration(
-          color: Colors.green,
+        decoration: BoxDecoration(
+          color: Colors.lightGreenAccent.shade400,
           shape: BoxShape.circle,
         ),
       ),
@@ -109,7 +107,6 @@ class _CatchGreenState extends State<CatchGreen> {
         backgroundColor: Colors.lightBlue.shade100,
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 20),
           Center(
