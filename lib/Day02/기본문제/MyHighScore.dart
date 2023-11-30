@@ -26,27 +26,27 @@ class MyHighScore extends StatefulWidget {
 }
 
 class _MyHighScoreState extends State<MyHighScore> {
-  ValueNotifier<double> gauge = ValueNotifier(0.0);
-  Timer? timer;
-  int score = 0;
+  final ValueNotifier<double> _progress = ValueNotifier(0.0);
+  Timer? _timer;
+  int _score = 0;
 
   void onButtonPress() {
     setTimer();
     setState(() {
-      if (gauge.value < 1) {
-        gauge.value += 0.4;
+      if (_progress.value < 1) {
+        _progress.value += 0.4;
       }
-      if (gauge.value >= 1) {
-        score++;
+      if (_progress.value >= 1) {
+        _score++;
       }
     });
   }
 
   void setTimer() {
-    if (timer?.isActive != true) {
-      timer = Timer.periodic(const Duration(milliseconds: 15), (timer) {
-        if (gauge.value > 0) {
-          gauge.value -= 0.03;
+    if (_timer?.isActive != true) {
+      _timer = Timer.periodic(const Duration(milliseconds: 15), (timer) {
+        if (_progress.value > 0) {
+          _progress.value -= 0.03;
         }
       });
     }
@@ -55,12 +55,12 @@ class _MyHighScoreState extends State<MyHighScore> {
   @override
   void initState() {
     super.initState();
-    gauge.addListener(() {
-      if (gauge.value <= 0) {
+    _progress.addListener(() {
+      if (_progress.value <= 0) {
         setState(() {
-          score = 0;
-          gauge.value = 0;
-          timer?.cancel();
+          _score = 0;
+          _progress.value = 0;
+          _timer?.cancel();
         });
       }
     });
@@ -69,47 +69,40 @@ class _MyHighScoreState extends State<MyHighScore> {
   @override
   void dispose() {
     super.dispose();
-    gauge.dispose();
-    timer?.cancel();
+    _progress.dispose();
+    _timer?.cancel();
   }
 
   Widget _buildProgressBar() {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: ValueListenableBuilder(
-        valueListenable: gauge,
-        builder: (context, value, _) => LayoutBuilder(
-          builder: (context, constraints) {
-            double barHeight = constraints.maxHeight * 0.8;
-            return Container(
-              height: barHeight,
-              width: 40,
+    double barHeight = 600;
+
+    return ValueListenableBuilder(
+      valueListenable: _progress,
+      builder: (context, value, _) => Container(
+        height: barHeight,
+        width: 40,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade800,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(15),
+            topLeft: Radius.circular(15),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Container(
+              height: value * barHeight,
+              constraints: BoxConstraints(maxHeight: barHeight, minHeight: 0),
               decoration: BoxDecoration(
-                color: Colors.grey.shade800,
+                color: Colors.purpleAccent.shade400,
                 borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(15),
-                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(12),
+                  topLeft: Radius.circular(12),
                 ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: value * barHeight,
-                    constraints:
-                        BoxConstraints(maxHeight: barHeight, minHeight: 0),
-                    decoration: BoxDecoration(
-                      color: Colors.purpleAccent.shade400,
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(12),
-                        topLeft: Radius.circular(12),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
@@ -122,7 +115,7 @@ class _MyHighScoreState extends State<MyHighScore> {
           const Text('Your score', style: TextStyle(fontSize: 30)),
           const SizedBox(height: 10),
           Text(
-            '$score',
+            '$_score',
             style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
           ),
         ],
@@ -136,21 +129,25 @@ class _MyHighScoreState extends State<MyHighScore> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
             _buildScore(),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 24, 80),
-                child: _buildProgressBar(),
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: Column(
+                children: [
+                  _buildProgressBar(),
+                  const SizedBox(height: 8),
+                  FloatingActionButton(
+                    onPressed: onButtonPress,
+                    child: const Icon(Icons.add),
+                  ),
+                ],
               ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onButtonPress,
-        child: const Icon(Icons.add),
       ),
     );
   }
