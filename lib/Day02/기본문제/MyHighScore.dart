@@ -76,22 +76,22 @@ class _MyHighScoreState extends State<MyHighScore> {
   Widget _buildProgressBar() {
     double barHeight = 600;
 
-    return ValueListenableBuilder(
-      valueListenable: _progress,
-      builder: (context, value, _) => Container(
-        height: barHeight,
-        width: 40,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade800,
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(15),
-            topLeft: Radius.circular(15),
-          ),
+    return Container(
+      height: barHeight,
+      width: 40,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade800,
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(15),
+          topLeft: Radius.circular(15),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ValueListenableBuilder(
+            valueListenable: _progress,
+            builder: (context, value, _) => Container(
               height: value * barHeight,
               constraints: BoxConstraints(maxHeight: barHeight, minHeight: 0),
               decoration: BoxDecoration(
@@ -102,8 +102,8 @@ class _MyHighScoreState extends State<MyHighScore> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
