@@ -40,6 +40,7 @@ class CatchGreen extends StatefulWidget {
 class _CatchGreenState extends State<CatchGreen> {
   late Timer timer;
   bool isPlaying = false;
+  bool showGreen = false;
   GreenAlignment green = GreenAlignment();
   DateTime startTime = DateTime.now();
   double timeElapsed = 0.0;
@@ -47,13 +48,14 @@ class _CatchGreenState extends State<CatchGreen> {
   void startTimer() {
     setState(() {
       timeElapsed = 0.0;
+      isPlaying = true;
       green = GreenAlignment();
     });
 
     Future.delayed(const Duration(seconds: 1), () {
       startTime = DateTime.now();
       setState(() {
-        isPlaying = true;
+        showGreen = true;
       });
       timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
         setState(() {
@@ -67,6 +69,7 @@ class _CatchGreenState extends State<CatchGreen> {
 
   void stopTimer() {
     isPlaying = false;
+    showGreen = false;
     timer.cancel();
   }
 
@@ -86,16 +89,27 @@ class _CatchGreenState extends State<CatchGreen> {
   }
 
   Widget _buildGreen() {
-    return Align(
-      alignment: green.alignment,
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.lightGreenAccent.shade400,
-          shape: BoxShape.circle,
-        ),
-      ),
+    return GestureDetector(
+      onTap: () => setState(() {
+        stopTimer();
+      }),
+      child: showGreen
+          ? Stack(
+              children: [
+                Align(
+                  alignment: green.alignment,
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.lightGreenAccent.shade400,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : null,
     );
   }
 
@@ -128,12 +142,7 @@ class _CatchGreenState extends State<CatchGreen> {
             child: Stack(
               children: [
                 Expanded(child: Container(color: Colors.black)),
-                GestureDetector(
-                  onTap: () => setState(() {
-                    stopTimer();
-                  }),
-                  child: isPlaying ? Stack(children: [_buildGreen()]) : null,
-                ),
+                _buildGreen(),
               ],
             ),
           ),
