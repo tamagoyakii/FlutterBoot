@@ -40,7 +40,7 @@ class _MySlackAvatarState extends State<MySlackAvatar> {
     });
   }
 
-  Widget avatar() {
+  Widget _buildAvatar() {
     return Container(
       width: 200,
       height: 200,
@@ -101,7 +101,7 @@ class _MySlackAvatarState extends State<MySlackAvatar> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              avatar(),
+              _buildAvatar(),
               const SizedBox(height: 50),
               Slider(
                 value: bigHead,
