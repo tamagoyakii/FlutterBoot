@@ -3,13 +3,13 @@ import 'dart:async';
 import 'dart:math';
 
 class GreenAlignment {
-  static final _rng = Random();
-  final Alignment alignment;
+  static final _random = Random();
+  final Alignment position;
 
   GreenAlignment()
-      : alignment = Alignment(
-          _rng.nextDouble() * 2 - 1,
-          _rng.nextDouble() * 2 - 1,
+      : position = Alignment(
+          _random.nextDouble() * 2 - 1,
+          _random.nextDouble() * 2 - 1,
         );
 }
 
@@ -38,45 +38,45 @@ class CatchGreen extends StatefulWidget {
 }
 
 class _CatchGreenState extends State<CatchGreen> {
-  late Timer timer;
-  bool isPlaying = false;
-  bool showGreen = false;
-  GreenAlignment green = GreenAlignment();
-  DateTime startTime = DateTime.now();
-  double timeElapsed = 0.0;
+  late Timer _timer;
+  bool _isPlaying = false;
+  bool _showGreen = false;
+  GreenAlignment _green = GreenAlignment();
+  DateTime _startTime = DateTime.now();
+  double _timeElapsed = 0.0;
 
-  void startTimer() {
+  void _startTimer() {
     setState(() {
-      timeElapsed = 0.0;
-      isPlaying = true;
-      green = GreenAlignment();
+      _timeElapsed = 0.0;
+      _isPlaying = true;
+      _green = GreenAlignment();
     });
 
     Future.delayed(const Duration(seconds: 1), () {
-      startTime = DateTime.now();
+      _startTime = DateTime.now();
       setState(() {
-        showGreen = true;
+        _showGreen = true;
       });
-      timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
+      _timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
         setState(() {
           final currentTime = DateTime.now();
-          final diffrence = currentTime.difference(startTime);
-          timeElapsed = diffrence.inMilliseconds / 1000.0;
+          final difference = currentTime.difference(_startTime);
+          _timeElapsed = difference.inMilliseconds / 1000.0;
         });
       });
     });
   }
 
-  void stopTimer() {
-    isPlaying = false;
-    showGreen = false;
-    timer.cancel();
+  void _stopTimer() {
+    _isPlaying = false;
+    _showGreen = false;
+    _timer.cancel();
   }
 
-  Widget _buildTimer() {
-    int minutes = timeElapsed ~/ 60;
-    int seconds = timeElapsed.toInt() % 60;
-    int milliseconds = (timeElapsed % 1 * 1000).toInt();
+  Widget _buildTimerWidget() {
+    int minutes = (_timeElapsed ~/ 60).toInt();
+    int seconds = (_timeElapsed.toInt() % 60).toInt();
+    int milliseconds = ((_timeElapsed % 1) * 1000).toInt();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -88,16 +88,16 @@ class _CatchGreenState extends State<CatchGreen> {
     );
   }
 
-  Widget _buildGreen() {
+  Widget _buildGreenWidget() {
     return GestureDetector(
       onTap: () => setState(() {
-        stopTimer();
+        _stopTimer();
       }),
-      child: showGreen
+      child: _showGreen
           ? Stack(
               children: [
                 Align(
-                  alignment: green.alignment,
+                  alignment: _green.position,
                   child: Container(
                     width: 50,
                     height: 50,
@@ -109,7 +109,7 @@ class _CatchGreenState extends State<CatchGreen> {
                 ),
               ],
             )
-          : null,
+          : const SizedBox.shrink(),
     );
   }
 
@@ -125,9 +125,9 @@ class _CatchGreenState extends State<CatchGreen> {
           const SizedBox(height: 20),
           Center(
             child: ElevatedButton(
-              onPressed: isPlaying ? null : startTimer,
+              onPressed: _isPlaying ? null : _startTimer,
               style: ElevatedButton.styleFrom(
-                backgroundColor: isPlaying ? Colors.grey : null,
+                backgroundColor: _isPlaying ? Colors.grey : null,
               ),
               child: const Text(
                 'Start!',
@@ -136,13 +136,13 @@ class _CatchGreenState extends State<CatchGreen> {
             ),
           ),
           const SizedBox(height: 10),
-          _buildTimer(),
+          _buildTimerWidget(),
           const SizedBox(height: 10),
           Expanded(
             child: Stack(
               children: [
                 Expanded(child: Container(color: Colors.black)),
-                _buildGreen(),
+                _buildGreenWidget(),
               ],
             ),
           ),
