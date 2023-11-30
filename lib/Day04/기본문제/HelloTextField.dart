@@ -33,29 +33,36 @@ class _HelloTextFieldState extends State<HelloTextField> {
   final FocusNode _leftInputFocusNode = FocusNode();
   final FocusNode _rightInputFocusNode = FocusNode();
 
+  KeyEventResult _handleBackspaceKeyEvent({
+    required FocusNode node,
+    required RawKeyEvent event,
+    required TextEditingController controller,
+    required FocusNode prevNode,
+  }) {
+    if (event is RawKeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.backspace &&
+        controller.text.isEmpty) {
+      prevNode.requestFocus();
+      return KeyEventResult.handled;
+    }
+    return KeyEventResult.ignored;
+  }
+
   @override
   void initState() {
     super.initState();
-
-    _leftInputFocusNode.onKey = (FocusNode node, RawKeyEvent event) {
-      if (event is RawKeyDownEvent &&
-          event.logicalKey == LogicalKeyboardKey.backspace &&
-          _leftInputController.text.isEmpty) {
-        _rightInputFocusNode.requestFocus();
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
-
-    _rightInputFocusNode.onKey = (FocusNode node, RawKeyEvent event) {
-      if (event is RawKeyDownEvent &&
-          event.logicalKey == LogicalKeyboardKey.backspace &&
-          _rightInputController.text.isEmpty) {
-        _leftInputFocusNode.requestFocus();
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
+    _leftInputFocusNode.onKey = (node, event) => _handleBackspaceKeyEvent(
+          node: node,
+          event: event,
+          controller: _leftInputController,
+          prevNode: _rightInputFocusNode,
+        );
+    _rightInputFocusNode.onKey = (node, event) => _handleBackspaceKeyEvent(
+          node: node,
+          event: event,
+          controller: _rightInputController,
+          prevNode: _leftInputFocusNode,
+        );
   }
 
   @override
