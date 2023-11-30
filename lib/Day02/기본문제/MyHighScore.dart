@@ -26,7 +26,7 @@ class MyHighScore extends StatefulWidget {
 }
 
 class _MyHighScoreState extends State<MyHighScore> {
-  double gaugeValue = 0.0;
+  double progressValue = 0.0;
   int score = 0;
   late Timer timer;
 
@@ -39,16 +39,16 @@ class _MyHighScoreState extends State<MyHighScore> {
   void resetScore() {
     setState(() {
       score = 0;
-      gaugeValue = 0.0;
+      progressValue = 0.0;
     });
   }
 
   void onButtonPress() {
     setState(() {
-      if (gaugeValue < 1) {
-        gaugeValue += 0.4;
+      if (progressValue < 1) {
+        progressValue += 0.4;
       }
-      if (gaugeValue >= 1) {
+      if (progressValue >= 1) {
         addScore();
       }
     });
@@ -58,9 +58,9 @@ class _MyHighScoreState extends State<MyHighScore> {
   void initState() {
     super.initState();
     timer = Timer.periodic(const Duration(milliseconds: 15), (timer) {
-      if (gaugeValue > 0) {
+      if (progressValue > 0) {
         setState(() {
-          gaugeValue -= 0.03;
+          progressValue -= 0.03;
         });
       }
     });
@@ -72,12 +72,13 @@ class _MyHighScoreState extends State<MyHighScore> {
     super.dispose();
   }
 
-  Widget _buildGaugeBar() {
+  Widget _buildProgressBar() {
     return Align(
       alignment: Alignment.bottomRight,
       child: LayoutBuilder(
         builder: (context, constraints) {
           double barHeight = constraints.maxHeight * 0.8;
+
           return Container(
             height: barHeight,
             width: 40,
@@ -92,7 +93,7 @@ class _MyHighScoreState extends State<MyHighScore> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  height: gaugeValue * barHeight,
+                  height: progressValue * barHeight,
                   constraints:
                       BoxConstraints(maxHeight: barHeight, minHeight: 0),
                   decoration: BoxDecoration(
@@ -138,7 +139,7 @@ class _MyHighScoreState extends State<MyHighScore> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, right: 24, bottom: 80),
-                child: _buildGaugeBar(),
+                child: _buildProgressBar(),
               ),
             ),
           ],
