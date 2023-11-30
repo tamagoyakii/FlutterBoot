@@ -30,19 +30,6 @@ class _MyHighScoreState extends State<MyHighScore> {
   Timer? timer;
   int score = 0;
 
-  void addScore() {
-    setState(() {
-      score++;
-    });
-  }
-
-  void resetScore() {
-    setState(() {
-      score = 0;
-      gauge.value = 0;
-    });
-  }
-
   void onButtonPress() {
     setTimer();
     setState(() {
@@ -50,7 +37,7 @@ class _MyHighScoreState extends State<MyHighScore> {
         gauge.value += 0.4;
       }
       if (gauge.value >= 1) {
-        addScore();
+        score++;
       }
     });
   }
@@ -70,8 +57,11 @@ class _MyHighScoreState extends State<MyHighScore> {
     super.initState();
     gauge.addListener(() {
       if (gauge.value <= 0) {
-        resetScore();
-        timer?.cancel();
+        setState(() {
+          score = 0;
+          gauge.value = 0;
+          timer?.cancel();
+        });
       }
     });
   }
@@ -83,21 +73,7 @@ class _MyHighScoreState extends State<MyHighScore> {
     timer?.cancel();
   }
 
-  Widget _gauge({required double barHeight, required double value}) {
-    return Container(
-      height: value * barHeight,
-      constraints: BoxConstraints(maxHeight: barHeight, minHeight: 0),
-      decoration: BoxDecoration(
-        color: Colors.purpleAccent.shade400,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(12),
-          topLeft: Radius.circular(12),
-        ),
-      ),
-    );
-  }
-
-  Widget _gaugeBar() {
+  Widget _buildProgressBar() {
     return Align(
       alignment: Alignment.bottomRight,
       child: ValueListenableBuilder(
@@ -117,7 +93,20 @@ class _MyHighScoreState extends State<MyHighScore> {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [_gauge(barHeight: barHeight, value: value)],
+                children: [
+                  Container(
+                    height: value * barHeight,
+                    constraints:
+                        BoxConstraints(maxHeight: barHeight, minHeight: 0),
+                    decoration: BoxDecoration(
+                      color: Colors.purpleAccent.shade400,
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(12),
+                        topLeft: Radius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },
@@ -126,7 +115,7 @@ class _MyHighScoreState extends State<MyHighScore> {
     );
   }
 
-  Widget _score() {
+  Widget _buildScore() {
     return Center(
       child: Column(
         children: [
@@ -149,11 +138,11 @@ class _MyHighScoreState extends State<MyHighScore> {
       body: SafeArea(
         child: Column(
           children: [
-            _score(),
+            _buildScore(),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 24, 80),
-                child: _gaugeBar(),
+                child: _buildProgressBar(),
               ),
             ),
           ],
