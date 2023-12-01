@@ -199,7 +199,7 @@ class _AnimatedStarState extends State<AnimatedStar>
   void dispose() {
     _slideController.dispose();
     _scaleController.dispose();
-    _scaleController.dispose();
+    _rotationController.dispose();
     super.dispose();
   }
 
