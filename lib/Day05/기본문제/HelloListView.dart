@@ -76,10 +76,10 @@ class _HelloListViewState extends State<HelloListView> {
     return ListView.separated(
       controller: _scrollController,
       padding: const EdgeInsets.all(12),
-      separatorBuilder: (BuildContext context, int index) =>
-          const SizedBox(height: 12),
       itemCount: spaceData.length,
       itemBuilder: (context, index) => _buildListItem(index),
+      separatorBuilder: (BuildContext context, int index) =>
+          const SizedBox(height: 12),
     );
   }
 
@@ -109,7 +109,7 @@ class _HelloListViewState extends State<HelloListView> {
       body: SafeArea(child: _buildListView()),
       floatingActionButton: FloatingActionButton(
         onPressed: _scrollToTop,
-        child: const Icon(Icons.keyboard_arrow_up),
+        child: const Icon(Icons.navigation),
       ),
     );
   }
