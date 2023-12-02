@@ -33,21 +33,15 @@ class _MyHighScoreState extends State<MyHighScore> {
   void onButtonPress() {
     setTimer();
     setState(() {
-      if (_progress.value < 1) {
-        _progress.value += 0.4;
-      }
-      if (_progress.value >= 1) {
-        _score++;
-      }
+      if (_progress.value < 1) _progress.value += 0.4;
+      if (_progress.value >= 1) _score++;
     });
   }
 
   void setTimer() {
     if (_timer?.isActive != true) {
       _timer = Timer.periodic(const Duration(milliseconds: 15), (timer) {
-        if (_progress.value > 0) {
-          _progress.value -= 0.03;
-        }
+        if (_progress.value > 0) _progress.value -= 0.03;
       });
     }
   }
@@ -68,9 +62,9 @@ class _MyHighScoreState extends State<MyHighScore> {
 
   @override
   void dispose() {
-    super.dispose();
     _progress.dispose();
     _timer?.cancel();
+    super.dispose();
   }
 
   Widget _buildProgressBar() {
