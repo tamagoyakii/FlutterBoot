@@ -33,7 +33,7 @@ class _HelloDialogState extends State<HelloDialog> {
     return List.generate(3, (index) => random.nextInt(100));
   }
 
-  Widget buildNumbers() {
+  Widget _buildNumbers() {
     final numbers = generateRandomIntegers();
 
     return SizedBox(
@@ -57,7 +57,7 @@ class _HelloDialogState extends State<HelloDialog> {
     );
   }
 
-  Widget buildDialog() {
+  Widget _buildDialog() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
       child: Column(
@@ -79,7 +79,7 @@ class _HelloDialogState extends State<HelloDialog> {
           const SizedBox(height: 30),
           Align(
             alignment: Alignment.bottomRight,
-            child: buildNumbers(),
+            child: _buildNumbers(),
           ),
         ],
       ),
@@ -110,7 +110,7 @@ class _HelloDialogState extends State<HelloDialog> {
                   showDialog<String>(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
-                      content: buildDialog(),
+                      content: _buildDialog(),
                     ),
                   );
                 },
