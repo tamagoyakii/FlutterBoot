@@ -133,7 +133,6 @@ class _MyFencyButtonState extends State<MyFencyButton>
               child: Expanded(
                 child: InkWell(
                   onTap: changeButtonStyle,
-                  splashColor: Colors.transparent,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.black,
