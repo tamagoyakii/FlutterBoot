@@ -131,36 +131,36 @@ class _MyFencyButtonState extends State<MyFencyButton>
                 ],
               ),
               child: Expanded(
-                child: OutlinedButton(
-                  onPressed: changeButtonStyle,
-                  style: OutlinedButton.styleFrom(
-                    textStyle: GoogleFonts.lobster(fontSize: 30),
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    side: _index == 0
-                        ? const BorderSide(color: Colors.white)
-                        : BorderSide.none,
-                    shape: RoundedRectangleBorder(
+                child: InkWell(
+                  onTap: changeButtonStyle,
+                  splashColor: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                  ),
-                  child: Text(
-                    'Flutter Boot\nClick me 😎',
-                    style: TextStyle(
-                      shadows: [
-                        Shadow(
-                          color: _buttonColors[_index],
-                          blurRadius: 2,
+                    child: Center(
+                      child: Text(
+                        'Flutter Boot\nClick me 😎',
+                        style: GoogleFonts.lobster(
+                          color: Colors.white,
+                          fontSize: 30,
+                          shadows: [
+                            Shadow(
+                              color: _buttonColors[_index],
+                              blurRadius: 2,
+                            ),
+                            Shadow(
+                              color: _buttonColors[_index],
+                              blurRadius: 4,
+                            ),
+                            Shadow(
+                              color: _buttonColors[_index],
+                              blurRadius: 6,
+                            ),
+                          ],
                         ),
-                        Shadow(
-                          color: _buttonColors[_index],
-                          blurRadius: 4,
-                        ),
-                        Shadow(
-                          color: _buttonColors[_index],
-                          blurRadius: 6,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
