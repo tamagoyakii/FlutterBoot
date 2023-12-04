@@ -53,7 +53,7 @@ class _MyFencyButtonState extends State<MyFencyButton>
     if (_index == 0) {
       _animationController.stop();
     } else if (_animationController.isAnimating == false) {
-      // _animationController.repeat();
+      _animationController.repeat();
     }
   }
 
