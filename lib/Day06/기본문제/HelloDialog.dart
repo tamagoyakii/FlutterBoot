@@ -26,73 +26,62 @@ class HelloDialog extends StatefulWidget {
 }
 
 class _HelloDialogState extends State<HelloDialog> {
-  final ValueNotifier<int> point = ValueNotifier(0);
-  List<int> numbers = [];
+  final ValueNotifier<int> _point = ValueNotifier(0);
 
   List<int> generateRandomIntegers() {
     final random = Random();
     return List.generate(3, (index) => random.nextInt(100));
   }
 
-  void openDialog() {
-    numbers = generateRandomIntegers();
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => buildDialog(),
-    );
-  }
+  Widget buildNumbers() {
+    final numbers = generateRandomIntegers();
 
-  Widget buildOption({required int index}) {
-    return TextButton(
-      onPressed: () {
-        point.value = numbers[index];
-        Navigator.pop(context);
-      },
-      child: Text('${numbers[index]}'),
-    );
-  }
-
-  Widget buildDialog() {
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Choose your next point!',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 15),
-            const Text('Choose one of the points below!'),
-            const Text(
-              'If you don\'t make a selection, your current score will be retained.',
-            ),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                buildOption(index: 0),
-                buildOption(index: 1),
-                buildOption(index: 2),
-              ],
-            ),
-          ],
+    return SizedBox(
+      height: 35,
+      width: 190,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, i) => TextButton(
+          onPressed: () {
+            _point.value = numbers[i];
+            Navigator.pop(context);
+          },
+          child: Text(
+            '${numbers[i]}',
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+          ),
         ),
+        separatorBuilder: (context, i) => const SizedBox(width: 10),
+        itemCount: numbers.length,
       ),
     );
   }
 
-  Widget buildCurrentPoint() {
-    return Text(
-      'Your point: ${point.value}',
-      style: const TextStyle(
-        fontSize: 25,
-        fontWeight: FontWeight.bold,
+  Widget buildDialog() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Choose your next point!',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const Text('Choose one of the points below!'),
+          const Text(
+            'If you don\'t make a selection, your current score will be retained.',
+          ),
+          const SizedBox(height: 30),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: buildNumbers(),
+          ),
+        ],
       ),
     );
   }
@@ -106,12 +95,25 @@ class _HelloDialogState extends State<HelloDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ValueListenableBuilder(
-                valueListenable: point,
-                builder: (context, value, _) => buildCurrentPoint(),
+                valueListenable: _point,
+                builder: (context, value, _) => Text(
+                  'Your point: ${_point.value}',
+                  style: const TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: openDialog,
+                onPressed: () {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      content: buildDialog(),
+                    ),
+                  );
+                },
                 child: const Text('I want more points!'),
               ),
             ],
