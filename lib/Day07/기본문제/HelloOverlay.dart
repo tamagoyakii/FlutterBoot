@@ -25,14 +25,13 @@ class HelloOverlay extends StatefulWidget {
 }
 
 class _HelloOverlayState extends State<HelloOverlay> {
-  OverlayEntry? overlayEntry;
+  final List<String> _buttonTexts = ['Hello!', 'Press', 'any', 'button!'];
+  OverlayEntry? _overlayEntry;
 
   void createOverlay({required LayerLink targetLink}) {
     removeOverlay();
-
-    assert(overlayEntry == null);
-
-    overlayEntry = OverlayEntry(
+    assert(_overlayEntry == null);
+    _overlayEntry = OverlayEntry(
       builder: (BuildContext context) => Stack(
         children: [
           CompositedTransformFollower(
@@ -60,13 +59,13 @@ class _HelloOverlayState extends State<HelloOverlay> {
         ],
       ),
     );
-    Overlay.of(context, debugRequiredFor: widget).insert(overlayEntry!);
+    Overlay.of(context, debugRequiredFor: widget).insert(_overlayEntry!);
   }
 
   void removeOverlay() {
-    overlayEntry?.remove();
-    overlayEntry?.dispose();
-    overlayEntry = null;
+    _overlayEntry?.remove();
+    _overlayEntry?.dispose();
+    _overlayEntry = null;
   }
 
   @override
@@ -89,28 +88,18 @@ class _HelloOverlayState extends State<HelloOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Hello Overlay')),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            GestureDetector(onTap: removeOverlay),
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildOverlayButton(text: 'Hello!'),
-                  const SizedBox(height: 15),
-                  _buildOverlayButton(text: 'Press'),
-                  const SizedBox(height: 15),
-                  _buildOverlayButton(text: 'any'),
-                  const SizedBox(height: 15),
-                  _buildOverlayButton(text: 'button!'),
-                ],
-              ),
-            ),
-          ],
+    return GestureDetector(
+      onTap: removeOverlay,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Hello Overlay')),
+        body: SafeArea(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(30),
+            itemCount: _buttonTexts.length,
+            itemBuilder: (context, index) =>
+                _buildOverlayButton(text: _buttonTexts[index]),
+            separatorBuilder: (context, index) => const SizedBox(height: 15),
+          ),
         ),
       ),
     );
