@@ -126,9 +126,6 @@ class _CatchGreenState extends State<CatchGreen> {
           Center(
             child: ElevatedButton(
               onPressed: _isPlaying ? null : _startTimer,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _isPlaying ? Colors.grey : null,
-              ),
               child: const Text(
                 'Start!',
                 style: TextStyle(fontWeight: FontWeight.bold),
