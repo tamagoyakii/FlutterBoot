@@ -89,9 +89,7 @@ class _HelloTextFieldState extends State<HelloTextField> {
                 child: TextField(
                   controller: _leftInputController,
                   focusNode: _leftInputFocusNode,
-                  onEditingComplete: () {
-                    _rightInputFocusNode.requestFocus();
-                  },
+                  onEditingComplete: () => _rightInputFocusNode.requestFocus(),
                 ),
               ),
               const SizedBox(width: 20),
@@ -99,9 +97,7 @@ class _HelloTextFieldState extends State<HelloTextField> {
                 child: TextField(
                   controller: _rightInputController,
                   focusNode: _rightInputFocusNode,
-                  onEditingComplete: () {
-                    _leftInputFocusNode.requestFocus();
-                  },
+                  onEditingComplete: () => _leftInputFocusNode.requestFocus(),
                 ),
               ),
               const SizedBox(width: 20),
