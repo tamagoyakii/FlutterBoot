@@ -28,7 +28,7 @@ class _HelloOverlayState extends State<HelloOverlay> {
   OverlayEntry? overlayEntry;
 
   void createOverlay({required LayerLink targetLink}) {
-    removeHighlightOverlay();
+    removeOverlay();
 
     assert(overlayEntry == null);
 
@@ -63,7 +63,7 @@ class _HelloOverlayState extends State<HelloOverlay> {
     Overlay.of(context, debugRequiredFor: widget).insert(overlayEntry!);
   }
 
-  void removeHighlightOverlay() {
+  void removeOverlay() {
     overlayEntry?.remove();
     overlayEntry?.dispose();
     overlayEntry = null;
@@ -71,7 +71,7 @@ class _HelloOverlayState extends State<HelloOverlay> {
 
   @override
   void dispose() {
-    removeHighlightOverlay();
+    removeOverlay();
     super.dispose();
   }
 
@@ -92,20 +92,25 @@ class _HelloOverlayState extends State<HelloOverlay> {
     return Scaffold(
       appBar: AppBar(title: const Text('Hello Overlay')),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildOverlayButton(text: 'Hello!'),
-              const SizedBox(height: 15),
-              _buildOverlayButton(text: 'Press'),
-              const SizedBox(height: 15),
-              _buildOverlayButton(text: 'any'),
-              const SizedBox(height: 15),
-              _buildOverlayButton(text: 'button!'),
-            ],
-          ),
+        child: Stack(
+          children: [
+            GestureDetector(onTap: removeOverlay),
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildOverlayButton(text: 'Hello!'),
+                  const SizedBox(height: 15),
+                  _buildOverlayButton(text: 'Press'),
+                  const SizedBox(height: 15),
+                  _buildOverlayButton(text: 'any'),
+                  const SizedBox(height: 15),
+                  _buildOverlayButton(text: 'button!'),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
