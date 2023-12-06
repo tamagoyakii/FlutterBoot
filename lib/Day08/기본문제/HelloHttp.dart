@@ -31,22 +31,20 @@ class _HelloHttpState extends State<HelloHttp> {
   TextEditingController inputController = TextEditingController(text: 'sky');
   Future<People>? people;
 
-  void getPeople() async {
-    final response = await http.get(
-      Uri.parse(
-        'https://swapi.dev/api/people/?search=${inputController.text}',
-      ),
-    );
-    if (response.statusCode == 200) {
-      setState(() {
-        people = Future.value(People.fromJson(jsonDecode(response.body)));
-      });
-    } else {
-      throw Exception();
+  Future<People> getPeople() async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          'https://swapi.dev/api/people/?search=${inputController.text}',
+        ),
+      );
+      return Future.value(People.fromJson(jsonDecode(response.body)));
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
-  Widget _buildListItem({required Human human}) {
+  Widget _buildPeople({required Human human}) {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -78,30 +76,32 @@ class _HelloHttpState extends State<HelloHttp> {
     return Expanded(child: Center(child: Text(filler)));
   }
 
-  Widget _buildPeopleList() {
+  Widget _buildSearchResult() {
     return FutureBuilder<People>(
       future: people,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text('');
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildFiller(filler: 'Loading...');
-        }
-        if (snapshot.hasError) {
+        } else if (snapshot.hasError) {
           return _buildFiller(filler: 'Error: ${snapshot.error}');
+        } else if (snapshot.hasData && snapshot.data!.count == 0) {
+          if (snapshot.data!.count == 0) {
+            return _buildFiller(
+              filler:
+                  'No results found, please try again with a different search term!',
+            );
+          } else {
+            return ListView.separated(
+              shrinkWrap: true,
+              itemCount: snapshot.data!.results!.length,
+              itemBuilder: (context, index) =>
+                  _buildPeople(human: snapshot.data!.results![index]),
+              separatorBuilder: (context, index) => const SizedBox(height: 15),
+            );
+          }
+        } else {
+          return Container();
         }
-        if (snapshot.data!.results!.isEmpty) {
-          return _buildFiller(
-            filler:
-                'No results found, please try again with a different search term!',
-          );
-        }
-        return ListView.separated(
-          shrinkWrap: true,
-          itemCount: snapshot.data!.results!.length,
-          itemBuilder: (context, index) =>
-              _buildListItem(human: snapshot.data!.results![index]),
-          separatorBuilder: (context, index) => const SizedBox(height: 15),
-        );
       },
     );
   }
@@ -119,13 +119,19 @@ class _HelloHttpState extends State<HelloHttp> {
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: ElevatedButton(
-                    onPressed: getPeople,
+                    onPressed: () => setState(() {
+                      people = getPeople();
+                    }),
                     child: const Text('Search!'),
                   ),
                 ),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 15),
-              _buildPeopleList(),
+              _buildSearchResult(),
             ],
           ),
         ),
