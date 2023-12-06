@@ -28,60 +28,48 @@ class HelloDialog extends StatefulWidget {
 class _HelloDialogState extends State<HelloDialog> {
   final ValueNotifier<int> _point = ValueNotifier(0);
 
-  List<int> generateRandomIntegers() {
+  List<int> generateRandomIntegers({required int count}) {
     final random = Random();
-    return List.generate(3, (index) => random.nextInt(100));
+    return List.generate(count, (index) => random.nextInt(100));
   }
 
-  Widget _buildNumbers() {
-    final numbers = generateRandomIntegers();
-
-    return SizedBox(
-      height: 35,
-      width: 190,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, i) => TextButton(
-          onPressed: () {
-            _point.value = numbers[i];
-            Navigator.pop(context);
-          },
-          child: Text(
-            '${numbers[i]}',
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+  Widget _buildButton() {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Choose one of the points below!'),
+            content: const Text(
+              'If you don\'t make a selection, your current score will be retained.',
+            ),
+            actions: generateRandomIntegers(count: 3)
+                .map(
+                  (point) => TextButton(
+                    onPressed: () {
+                      _point.value = point;
+                      Navigator.pop(context);
+                    },
+                    child: Text('$point'),
+                  ),
+                )
+                .toList(),
           ),
-        ),
-        separatorBuilder: (context, i) => const SizedBox(width: 10),
-        itemCount: numbers.length,
-      ),
+        );
+      },
+      child: const Text('I want more points!'),
     );
   }
 
-  Widget _buildDialog() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Choose your next point!',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 20),
-          const Text('Choose one of the points below!'),
-          const Text(
-            'If you don\'t make a selection, your current score will be retained.',
-          ),
-          const SizedBox(height: 30),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: _buildNumbers(),
-          ),
-        ],
+  Widget _buildPoint() {
+    return ValueListenableBuilder(
+      valueListenable: _point,
+      builder: (context, value, _) => Text(
+        'Your point: ${_point.value}',
+        style: const TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -94,28 +82,9 @@ class _HelloDialogState extends State<HelloDialog> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ValueListenableBuilder(
-                valueListenable: _point,
-                builder: (context, value, _) => Text(
-                  'Your point: ${_point.value}',
-                  style: const TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              _buildPoint(),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      content: _buildDialog(),
-                    ),
-                  );
-                },
-                child: const Text('I want more points!'),
-              ),
+              _buildButton(),
             ],
           ),
         ),
