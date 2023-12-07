@@ -2,17 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 
-class GreenAlignment {
-  static final _random = Random();
-  final Alignment position;
-
-  GreenAlignment()
-      : position = Alignment(
-          _random.nextDouble() * 2 - 1,
-          _random.nextDouble() * 2 - 1,
-        );
-}
-
 void main() {
   runApp(const MyApp());
 }
