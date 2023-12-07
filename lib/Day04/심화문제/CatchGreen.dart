@@ -32,7 +32,7 @@ class _CatchGreenState extends State<CatchGreen> {
   late Alignment _green;
   bool _isPlaying = false;
   bool _showGreen = false;
-  String _timeElapsed = '0:00.000';
+  String _elapsedTime = '0:00.000';
 
   @override
   void dispose() {
@@ -52,7 +52,7 @@ class _CatchGreenState extends State<CatchGreen> {
       _stopwatch.start();
       _timer = Timer.periodic(const Duration(milliseconds: 4), (Timer timer) {
         setState(() {
-          _timeElapsed =
+          _elapsedTime =
               getFormattedTime(milliseconds: _stopwatch.elapsedMilliseconds);
         });
       });
@@ -67,7 +67,7 @@ class _CatchGreenState extends State<CatchGreen> {
   void resetTimer() {
     _stopwatch.reset();
     setState(() {
-      _timeElapsed = '0:00.000';
+      _elapsedTime = '0:00.000';
     });
   }
 
@@ -131,7 +131,7 @@ class _CatchGreenState extends State<CatchGreen> {
             ),
           ),
           const SizedBox(height: 10),
-          Text(_timeElapsed),
+          Text(_elapsedTime),
           const SizedBox(height: 10),
           Expanded(
             child: Stack(
