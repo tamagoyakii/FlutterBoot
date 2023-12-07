@@ -90,14 +90,8 @@ class _HelloListViewState extends State<HelloListView> {
         border: Border.all(color: Colors.grey, width: 1.0),
         borderRadius: BorderRadius.circular(3),
       ),
-      child: Row(
-        children: [
-          const Icon(Icons.travel_explore),
-          const SizedBox(width: 10),
-          Text(
-            '${_spaceDataKeys[index]} was discovered in ${spaceData[_spaceDataKeys[index]]}',
-          ),
-        ],
+      child: Text(
+        '🛰️  ${_spaceDataKeys[index]} was discovered in ${spaceData[_spaceDataKeys[index]]}',
       ),
     );
   }
