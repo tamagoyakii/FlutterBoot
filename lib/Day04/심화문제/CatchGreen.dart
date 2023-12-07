@@ -62,6 +62,10 @@ class _CatchGreenState extends State<CatchGreen> {
   void stopTimer() {
     _stopwatch.stop();
     _timer.cancel();
+    setState(() {
+      _elapsedTime =
+          getFormattedTime(milliseconds: _stopwatch.elapsedMilliseconds);
+    });
   }
 
   void resetTimer() {
