@@ -74,10 +74,7 @@ class NetflixSelectProfile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Select a profile to start the Flutter Boot.',
-              style: TextStyle(fontSize: 18),
-            ),
+            const Text('Select a profile to start the Flutter Boot.'),
             const SizedBox(height: 30),
             SizedBox(
               width: 250,
