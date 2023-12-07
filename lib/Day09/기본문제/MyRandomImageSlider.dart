@@ -28,7 +28,6 @@ class MyRandomImageSlider extends StatefulWidget {
 class _MyRandomImageSliderState extends State<MyRandomImageSlider> {
   final List<String> _images = [];
   int _index = 0;
-  int _max = 0;
 
   String getRandomImageSrc() {
     return 'https://picsum.photos/id/${Random().nextInt(1000) + 1}/200/200';
@@ -41,12 +40,10 @@ class _MyRandomImageSliderState extends State<MyRandomImageSlider> {
   }
 
   void showNextImage() {
-    if (_index == _max) _images.add(getRandomImageSrc());
+    if (_index + 1 == _images.length) _images.add(getRandomImageSrc());
     setState(() {
       _index++;
-      _max = max(_index, _max);
     });
-    debugPrint('${_images.length} $_index $_max');
   }
 
   void showPreviousImage() {
@@ -78,7 +75,7 @@ class _MyRandomImageSliderState extends State<MyRandomImageSlider> {
           Expanded(
             child: Image.network(
               _images[_index],
-              width: MediaQuery.of(context).size.width,
+              width: double.infinity,
               fit: BoxFit.cover,
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
                 if (frame == null) {
