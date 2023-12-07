@@ -38,66 +38,75 @@ class CatchGreen extends StatefulWidget {
 }
 
 class _CatchGreenState extends State<CatchGreen> {
+  final Stopwatch _stopwatch = Stopwatch();
   late Timer _timer;
+  late Alignment _green;
   bool _isPlaying = false;
   bool _showGreen = false;
-  GreenAlignment _green = GreenAlignment();
-  DateTime _startTime = DateTime.now();
-  double _timeElapsed = 0.0;
+  String _timeElapsed = '0:00.000';
 
-  void _startTimer() {
-    setState(() {
-      _timeElapsed = 0.0;
-      _isPlaying = true;
-      _green = GreenAlignment();
-    });
+  @override
+  void dispose() {
+    _stopwatch.stop();
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void startTimer() {
+    resetTimer();
+    _isPlaying = true;
+    _green =
+        Alignment(Random().nextDouble() * 2 - 1, Random().nextDouble() * 2 - 1);
 
     Future.delayed(const Duration(seconds: 1), () {
-      _startTime = DateTime.now();
-      setState(() {
-        _showGreen = true;
-      });
-      _timer = Timer.periodic(const Duration(milliseconds: 30), (timer) {
+      _showGreen = true;
+      _stopwatch.start();
+      _timer = Timer.periodic(const Duration(milliseconds: 4), (Timer timer) {
         setState(() {
-          final currentTime = DateTime.now();
-          final difference = currentTime.difference(_startTime);
-          _timeElapsed = difference.inMilliseconds / 1000.0;
+          _timeElapsed =
+              getFormattedTime(milliseconds: _stopwatch.elapsedMilliseconds);
         });
       });
     });
   }
 
-  void _stopTimer() {
-    _isPlaying = false;
-    _showGreen = false;
+  void stopTimer() {
+    _stopwatch.stop();
     _timer.cancel();
   }
 
-  Widget _buildTimerWidget() {
-    int minutes = (_timeElapsed ~/ 60).toInt();
-    int seconds = (_timeElapsed.toInt() % 60).toInt();
-    int milliseconds = ((_timeElapsed % 1) * 1000).toInt();
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('$minutes:'),
-        Text('${seconds.toString().padLeft(2, '0')}.'),
-        Text(milliseconds.toString().padLeft(3, '0')),
-      ],
-    );
+  void resetTimer() {
+    _stopwatch.reset();
+    setState(() {
+      _timeElapsed = '0:00.000';
+    });
   }
 
-  Widget _buildGreenWidget() {
+  String getFormattedTime({required int milliseconds}) {
+    int seconds = (milliseconds / 1000).truncate();
+    int minutes = (seconds / 60).truncate();
+
+    String milliSecondsStr = (milliseconds % 1000).toString().padLeft(3, '0');
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+
+    return '$minutesStr:$secondsStr.$milliSecondsStr';
+  }
+
+  Widget _buildGreenDot() {
     return GestureDetector(
-      onTap: () => setState(() {
-        _stopTimer();
-      }),
+      onTap: () {
+        stopTimer();
+        setState(() {
+          _isPlaying = false;
+          _showGreen = false;
+        });
+      },
       child: _showGreen
           ? Stack(
               children: [
                 Align(
-                  alignment: _green.position,
+                  alignment: _green,
                   child: Container(
                     width: 50,
                     height: 50,
@@ -125,7 +134,7 @@ class _CatchGreenState extends State<CatchGreen> {
           const SizedBox(height: 20),
           Center(
             child: ElevatedButton(
-              onPressed: _isPlaying ? null : _startTimer,
+              onPressed: _isPlaying ? null : startTimer,
               child: const Text(
                 'Start!',
                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -133,13 +142,13 @@ class _CatchGreenState extends State<CatchGreen> {
             ),
           ),
           const SizedBox(height: 10),
-          _buildTimerWidget(),
+          Text(_timeElapsed),
           const SizedBox(height: 10),
           Expanded(
             child: Stack(
               children: [
                 Expanded(child: Container(color: Colors.black)),
-                _buildGreenWidget(),
+                _buildGreenDot(),
               ],
             ),
           ),
